@@ -220,6 +220,7 @@ export default function ToDoList() {
             height: filteredTasks.length === 0 ? "250px" : "65dvh",
           }}
         >
+          {/* header with controls */}
           <header className="d-flex justify-content-between mb-2">
             <h2>To Do Items</h2>
             <div className="d-flex justify-content-end">
@@ -254,6 +255,7 @@ export default function ToDoList() {
             </div>
           </header>
 
+          {/* search bar to filter data list */}
           <TextField
             label="Search"
             variant="outlined"
@@ -267,6 +269,7 @@ export default function ToDoList() {
               },
             }}
           />
+          {/* the actual todo list */}
           <DataGrid
             onRowSelectionModelChange={handleSelection}
             rows={filteredTasks}
