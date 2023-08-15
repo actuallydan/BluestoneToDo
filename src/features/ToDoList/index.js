@@ -14,13 +14,9 @@ const modes = {
 
 export default function ToDoList() {
   const [tasks, setTasks] = useState(taskList);
-  // text of the input field in the dialog
   const [description, setDescription] = useState("");
-  // selected item/s
   const [selection, setSelection] = useState([]);
-  // dialog visibility
   const [isOpen, setIsOpen] = useState(false);
-  // whether we're adding or editing from the dialog
   const [mode, setMode] = useState(modes.ADD);
 
   const [search, setSearch] = useState("");
@@ -83,7 +79,6 @@ export default function ToDoList() {
   /**
    * @description handler function to set the selection state variable
    * @param {array} ids - array of IDs passed in from Grid select event
-   * INSTRUCTIONS: use the js filter method to set the selection as an array of tasks
    */
   const handleSelection = (ids) => {
     const selectedTasks = tasks.filter((t) => ids.includes(t.id));
@@ -93,8 +88,6 @@ export default function ToDoList() {
 
   /**
    * @description function for submitting from the dialog
-   * INSTRUCTIONS: use the mode to determine which function to call when
-   * clicking the submit button
    */
   const handleSubmit = () => {
     if (mode === modes.ADD) {
@@ -107,11 +100,8 @@ export default function ToDoList() {
 
   /**
    * @description function to create a task for the toDo list
-   * INSTRUCTIONS: use the description state variable to create a new task object
-   * and add it with the setTasks hook
    */
   const createTask = () => {
-    // get the highest ID value and increment it
     const newId = Math.max(...tasks.map((t) => t.id)) + 1;
 
     const newTask = {
@@ -127,8 +117,6 @@ export default function ToDoList() {
 
   /**
    * @description function to update an exsting task
-   * INSTRUCTIONS: use the selection state variable and setTasks hook
-   * with a js map to create a new task array
    */
   const updateTask = () => {
     if (selection.length === 0) {
@@ -158,8 +146,6 @@ export default function ToDoList() {
 
   /**
    * @description method to remove an existing task
-   * INSTRUCTIONS: use the selection state variable and setTasks hook
-   * with a js filter to create a new task array
    */
   const removeTask = () => {
     if (selection.length === 0) {
@@ -200,7 +186,6 @@ export default function ToDoList() {
       field: "complete",
       headerName: "Complete",
       flex: 0.3,
-
       renderCell: (params) => (
         <Checkbox
           checked={params.row.complete}
@@ -228,7 +213,6 @@ export default function ToDoList() {
 
   return (
     <>
-      {/* Main to do list */}
       <div className="d-flex flex-column align-items-center mt-4">
         <div
           style={{
@@ -251,7 +235,6 @@ export default function ToDoList() {
               <Button
                 variant="contained"
                 className="ms-2 my-2"
-                // style={{ marginTop: "0.25rem", marginBottom: "0.25rem" }}
                 onClick={handleOpenEditModal}
                 disabled={!selection[0]}
                 size="small"
@@ -261,7 +244,6 @@ export default function ToDoList() {
               <Button
                 variant="contained"
                 className="ms-2 my-2"
-                // style={{ marginTop: "0.25rem", marginBottom: "0.25rem" }}
                 onClick={removeTask}
                 disabled={!Boolean(selection[0])}
                 size="small"
@@ -271,6 +253,7 @@ export default function ToDoList() {
               </Button>
             </div>
           </header>
+
           <TextField
             label="Search"
             variant="outlined"
