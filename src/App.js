@@ -1,6 +1,5 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { ToDoList } from "./ToDoList";
+import ToDoList from "./features/ToDoList";
 // bootstrap
 import "bootstrap/dist/css/bootstrap.css";
 
