@@ -233,7 +233,7 @@ export default function ToDoList() {
         <div
           style={{
             width: "500px",
-            height: tasks.length === 0 ? "250px" : "65dvh",
+            height: filteredTasks.length === 0 ? "250px" : "65dvh",
           }}
         >
           <header className="d-flex justify-content-between mb-2">
@@ -297,6 +297,10 @@ export default function ToDoList() {
             autoPageSize // doesn't cause layout shift, but you have to haev a concept of parent height
             sx={{
               borderColor: "#00000030",
+              '& .MuiTablePagination-displayedRows': {
+                marginBottom: "0",
+                display: filteredTasks.length === 0 ? "none" : "initial"
+              }
             }}
           />
         </div>
