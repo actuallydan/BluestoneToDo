@@ -9,5 +9,5 @@ cd BluestoneToDo && yarn install
 yarn start
 ```
 
-https://github.com/actuallydan/BluestoneToDo/assets/16323009/5797d72a-24e1-4666-8b9a-3ed10d472e9a
+https://github.com/actuallydan/BluestoneToDo/assets/16323009/cf6f686b-90dc-452f-b93c-e19020088bf4
 
