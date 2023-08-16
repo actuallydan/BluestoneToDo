@@ -114,7 +114,11 @@ export default function ToDoList() {
    * @description function to create a task for the toDo list
    */
   const createTask = () => {
-    const newId = Math.max(...tasks.map((t) => t.id)) + 1;
+
+    // if there are no items, lastId becomes -Infinity, which is bad for an ID and also creates a unique key violation when rendering
+    const lastId = tasks.length !== 0 ? Math.max(...tasks.map((t) => t.id)) : -1;
+
+    const newId = lastId + 1;
 
     const newTask = {
       id: newId,
