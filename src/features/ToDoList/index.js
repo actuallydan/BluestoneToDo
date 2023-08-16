@@ -1,38 +1,46 @@
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Checkbox, TextField } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 
 import NoRows from "./NoRows";
 import Modal from "./Modal";
 
+import TextField from "../../components/TextField";
+import Button from "../../components/Button";
+
 import { taskList } from "../../tasks";
+import { colors } from "../../config/styles";
 
 const modes = {
   ADD: "ADD",
   EDIT: "EDIT",
 };
 
+const initialDialogState = {
+  mode: modes.ADD,
+  isOpen: false
+};
+
 export default function ToDoList() {
   const [tasks, setTasks] = useState(taskList);
   const [description, setDescription] = useState("");
   const [selection, setSelection] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [mode, setMode] = useState(modes.ADD);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [mode, setMode] = useState(modes.ADD);
+
+  const [dialogState, setDialogState] = useState(initialDialogState);
+
 
   const [search, setSearch] = useState("");
-
-  /**
-   * @description open the dialog
-   */
-  const openDialog = () => {
-    setIsOpen(true);
-  };
 
   /**
    * @description close the dialog
    */
   const closeDialog = () => {
-    setIsOpen(false);
+    setDialogState({
+      ...dialogState,
+      isOpen: false
+    })
   };
 
   /**
@@ -41,10 +49,12 @@ export default function ToDoList() {
   const handleOpenAddModal = () => {
     // set the description
     setDescription("");
-    // set the mode
-    setMode(modes.ADD);
-    // open the dialog
-    openDialog();
+
+    // update dialog state for adding a task
+    setDialogState({
+      mode: modes.ADD,
+      isOpen: true
+    })
   };
 
   /**
@@ -54,10 +64,12 @@ export default function ToDoList() {
     // set the description from the current selection
     const task = selection[0];
     setDescription(task.description);
-    // set the mode
-    setMode(modes.EDIT);
-    // open the dialog
-    openDialog();
+
+    // update dialog state for editing
+    setDialogState({
+      mode: modes.EDIT,
+      isOpen: true
+    })
   };
 
   /**
@@ -90,7 +102,7 @@ export default function ToDoList() {
    * @description function for submitting from the dialog
    */
   const handleSubmit = () => {
-    if (mode === modes.ADD) {
+    if (dialogState.mode === modes.ADD) {
       createTask();
       return;
     }
@@ -184,6 +196,7 @@ export default function ToDoList() {
   const columns = [
     {
       field: "complete",
+      // column name gets ellipsized on the smallest screen sizes, consider hiding altogether under certain width?
       headerName: "Complete",
       flex: 0.3,
       renderCell: (params) => (
@@ -198,6 +211,8 @@ export default function ToDoList() {
       headerName: "Description",
       flex: 1,
       renderCell: (params) => {
+
+        // strike through task to reinforce that it's been completed, for fun?
         const cellStyle = params.row.complete
           ? "text-decoration-line-through"
           : "";
@@ -216,38 +231,33 @@ export default function ToDoList() {
       <div className="d-flex flex-column align-items-center mt-4">
         <div
           style={{
-            width: "500px",
+            width: "min(calc(100% - 1rem), 500px)",
             height: filteredTasks.length === 0 ? "250px" : "65dvh",
           }}
         >
+
           {/* header with controls */}
-          <header className="d-flex justify-content-between mb-2">
-            <h2>To Do Items</h2>
+          <header className="d-flex justify-content-between mb-2 align-items-center">
+            <h2 className="mb-0">Tasks</h2>
             <div className="d-flex justify-content-end">
               <Button
-                variant="contained"
                 className="ms-2 my-2"
                 onClick={handleOpenAddModal}
-                size="small"
                 color="success"
               >
                 Add
               </Button>
               <Button
-                variant="contained"
                 className="ms-2 my-2"
                 onClick={handleOpenEditModal}
                 disabled={!selection[0]}
-                size="small"
               >
                 Edit
               </Button>
               <Button
-                variant="contained"
                 className="ms-2 my-2"
                 onClick={removeTask}
                 disabled={!Boolean(selection[0])}
-                size="small"
                 color="error"
               >
                 Remove
@@ -258,22 +268,18 @@ export default function ToDoList() {
           {/* search bar to filter data list */}
           <TextField
             label="Search"
-            variant="outlined"
             value={search}
             onChange={handleSearch}
             placeholder="beaker"
             className="mb-4 w-100"
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#00000030",
-              },
-            }}
           />
+
           {/* the actual todo list */}
           <DataGrid
             onRowSelectionModelChange={handleSelection}
             rows={filteredTasks}
             columns={columns}
+            disableColumnMenu={true}
             slots={{
               noRowsOverlay: () => (
                 <NoRows handleOpenAddModal={handleOpenAddModal} />
@@ -282,7 +288,8 @@ export default function ToDoList() {
             // autoHeight // doesn't have extra space when few items
             autoPageSize // doesn't cause layout shift, but you have to haev a concept of parent height
             sx={{
-              borderColor: "#00000030",
+              borderColor: colors.lightGray,
+              borderRadius: "0.5rem",
               '& .MuiTablePagination-displayedRows': {
                 marginBottom: "0",
                 display: filteredTasks.length === 0 ? "none" : "initial"
@@ -293,8 +300,7 @@ export default function ToDoList() {
       </div>
 
       <Modal
-        isOpen={isOpen}
-        mode={mode}
+        {...dialogState}
         description={description}
         handleUpdateDescription={handleUpdateDescription}
         closeDialog={closeDialog}

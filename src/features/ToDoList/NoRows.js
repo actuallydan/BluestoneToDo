@@ -1,13 +1,13 @@
-import { Button } from "@mui/material";
+import Button from "../../components/Button";
 
 export default function NoRows({ handleOpenAddModal }) {
   return (
     <div
       className="d-flex flex-column justify-content-center align-items-center h-100"
     >
-      <p className="mb-4">No rows</p>
-      <Button variant="contained" onClick={handleOpenAddModal}>
-        Add task
+      <p className="mb-4">No tasks matching that query</p>
+      <Button color="success" onClick={handleOpenAddModal}>
+        Add task +
       </Button>
     </div>
   );
