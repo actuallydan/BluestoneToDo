@@ -25,8 +25,6 @@ export default function ToDoList() {
   const [tasks, setTasks] = useState(taskList);
   const [description, setDescription] = useState("");
   const [selection, setSelection] = useState([]);
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [mode, setMode] = useState(modes.ADD);
 
   const [dialogState, setDialogState] = useState(initialDialogState);
 
